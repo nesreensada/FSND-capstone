@@ -77,12 +77,14 @@ class Actor(db.Model):
     __tablename__ = 'actors'
     id = Column(Integer, primary_key=True)
     name = Column(String(256), nullable=False)
+    gender = Column(String(), nullable=False)
     date_of_birth = Column(Date, nullable=False)
     cast = db.relationship('cast', backref='actors', lazy='dynamic')
 
-    def __init__(self, name, date_of_birth):
+    def __init__(self, name, gender, date_of_birth):
         self.name = name
         self.date_of_birth = date_of_birth
+        self.gender = gender
 
     def insert(self):
         db.session.add(self)
@@ -99,11 +101,12 @@ class Actor(db.Model):
         return {
             "name": self.name,
             "date_of_birth": self.date_of_birth.strftime("%B %d, %Y"),
+            "gender": self.gender,
             "movies": [movie.title for movie in self.movies]
         }
 
     def __repr__(self):
-        return f'<Actor {self.name} {self.ddate_of_birth} >'
+        return f'<Actor {self.name} {self.date_of_birth} {self.gender} >'
 
 
 class Cast(db.Model):
