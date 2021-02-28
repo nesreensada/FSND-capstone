@@ -31,7 +31,6 @@ class Movies(db.Model):
     release_year = db.Column(Integer, nullable=False)
     duration = db.Column(Integer, nullable=False)
     title = Column(String(180), nullable=False, unique=True)
-    cast = db.relationship('Cast', backref='movies', lazy='dynamic')
 
     def __init__(self, title, release_year, duration):
         self.title = title
@@ -61,12 +60,15 @@ class Movies(db.Model):
             'id': self.id,
             'release_year': self.release_year,
             'duration': self.duration,
-            'title': self.title,
-            'cast': list(map(lambda actor: actor.name, self.cast))
+            'title': self.title
         }
 
     def __repr__(self):
         return f'<Movie {self.title} {self.duration} {self.release_year} >'
+
+    def row2dict(row):
+        return dict((col, getattr(row, col))
+                    for col in row.__table__.columns.keys())
 
 
 class Actor(db.Model):
@@ -79,7 +81,6 @@ class Actor(db.Model):
     name = Column(String(256), nullable=False)
     gender = Column(String(), nullable=False)
     date_of_birth = Column(Date, nullable=False)
-    cast = db.relationship('cast', backref='actors', lazy='dynamic')
 
     def __init__(self, name, gender, date_of_birth):
         self.name = name
@@ -97,42 +98,23 @@ class Actor(db.Model):
     def update(self):
         db.session.commit()
 
-    def details(self):
+    def short(self):
         return {
             "name": self.name,
+            "gender": self.gender
+        }
+
+    def long(self):
+        return {
+            "id": self.id,
+            "name": self.name,
             "date_of_birth": self.date_of_birth.strftime("%B %d, %Y"),
-            "gender": self.gender,
-            "movies": [movie.title for movie in self.movies]
+            "gender": self.gender
         }
 
     def __repr__(self):
         return f'<Actor {self.name} {self.date_of_birth} {self.gender} >'
 
-
-class Cast(db.Model):
-    __tablename__ = 'cast'
-    id = db.Column(db.Integer, primary_key=True)
-    actor_id = db.Column(Integer, db.ForeignKey('actors.id'))
-    movie_id = db.Column(Integer, db.ForeignKey('movies.id'))
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-
-    def details(self):
-        return {
-            'id': self.id,
-            'actor_id': self.actor_id,
-            'movie_id': self.movie_id
-        }
-
-    def show_movie(self):
-        return {
-            'id': self.movie_id,
-        }
+    def row2dict(row):
+        return dict((col, getattr(row, col))
+                    for col in row.__table__.columns.keys())
