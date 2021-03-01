@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from models import Movies, Actor, setup_db
 import sys
-from auth.auth import AuthError, AUTH0_CALLBACK_URL, \
+from auth.auth import AuthError, requires_auth, AUTH0_CALLBACK_URL, \
     AUTH0_CLIENT_ID, AUTH0_DOMAIN, AUTH0_JWT_API_AUDIENCE
 
 
@@ -63,9 +63,9 @@ def create_app(test_config=None):
             abort(500)
 
     @app.route('/movies', methods=['POST'])
-    #@requires_auth('post:movies')
-    #def create_movie(jwt):
-    def create_movie():
+    @requires_auth('post:movies')
+    def create_movie(jwt):
+    #def create_movie():
         """
             POST /movies
             it should create a new row in the movies table
@@ -93,9 +93,9 @@ def create_app(test_config=None):
 
 
     @app.route('/movies/<int:movie_id>', methods=['GET'])
-    #@requires_auth("get:movies-id")
-    #def get_movie_by_id(jwt, movie_id):
-    def get_movie_by_id(movie_id):
+    @requires_auth("get:movies-id")
+    def get_movie_by_id(jwt, movie_id):
+    #def get_movie_by_id(movie_id):
         """
         GET /movies/<int:movie_id>
         get the movie by id
@@ -113,9 +113,9 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-    #@requires_auth("patch:movies")
-    #def update_movie_by_id(jwt, movie_id):
-    def update_movie_by_id(movie_id):
+    @requires_auth("patch:movies")
+    def update_movie_by_id(jwt, movie_id):
+    #def update_movie_by_id(movie_id):
         """
         PATCH /movies/<int:movie_id>
         to update the movie by id
@@ -148,9 +148,9 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-    #@requires_auth('delete:movies')
-    #def delete_movie(jwt, movie_id):
-    def delete_movie(movie_id):
+    @requires_auth('delete:movies')
+    def delete_movie(jwt, movie_id):
+    #def delete_movie(movie_id):
         """
         DELETE /movies/<id>
             where <id> is the existing model id
@@ -193,9 +193,9 @@ def create_app(test_config=None):
             abort(500)
 
     @app.route('/actors', methods=['POST'])
-    #@requires_auth('post:actors')
-    #def create_actor(jwt):
-    def create_actor():
+    @requires_auth('post:actors')
+    def create_actor(jwt):
+    #def create_actor():
         """
             POST /actors
             it should create a new row in the actors table
@@ -222,8 +222,9 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors/<int:actor_id>', methods=['GET'])
-    #@requires_auth("get:actors-id")
-    def get_actor_by_id(actor_id):
+    @requires_auth("get:actors-id")
+    def get_actor_by_id(jwt, actor_id):
+    #def get_actor_by_id(actor_id):
         """
         GET /actors/<int:actor_id>
         get the actors by id
@@ -242,9 +243,9 @@ def create_app(test_config=None):
 
 
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-    #@requires_auth("patch:actors")
-    #def update_actor_by_id(jwt, actor_id):
-    def update_actor_by_id(actor_id):
+    @requires_auth("patch:actors")
+    def update_actor_by_id(jwt, actor_id):
+    #def update_actor_by_id(actor_id):
         """
         PATCH /actors/<int:actor_id>
         to update the movie by id
@@ -279,9 +280,9 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-    #@requires_auth('delete:actors')
-    #def delete_actor(jwt, actor_id):
-    def delete_actor(actor_id):
+    @requires_auth('delete:actors')
+    def delete_actor(jwt, actor_id):
+    #def delete_actor(actor_id):
         """
         DELETE /actors/<id>
             where <id> is the existing model id
