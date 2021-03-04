@@ -3,15 +3,11 @@ from flask import request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
-import os
 
 
-# Configurations gotten from the account created on Auth0
-AUTH0_DOMAIN = os.environ["AUTH0_DOMAIN"]
-JWT_TOKEN_ENCRYPTION_ALGORITHMS = os.environ["JWT_TOKEN_ENCRYPTION_ALGORITHMS"]
-AUTH0_JWT_API_AUDIENCE = os.environ["AUTH0_JWT_API_AUDIENCE"]
-AUTH0_CLIENT_ID = os.environ["AUTH0_CLIENT_ID"]
-AUTH0_CALLBACK_URL = os.environ["AUTH0_CALLBACK_URL"]
+AUTH0_DOMAIN = 'fsnd-nes.us.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'casting-agency-api'
 
 
 # AuthError Exception
@@ -106,8 +102,8 @@ def verify_decode_jwt(token):
             payload = jwt.decode(
                 token,
                 rsa_key,
-                algorithms=JWT_TOKEN_ENCRYPTION_ALGORITHMS,
-                audience=AUTH0_JWT_API_AUDIENCE,
+                algorithms=ALGORITHMS,
+                audience=API_AUDIENCE,
                 issuer='https://' + AUTH0_DOMAIN + '/'
             )
 

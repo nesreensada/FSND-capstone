@@ -39,6 +39,36 @@
 					"response": []
 				},
 				{
+					"name": "/actors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/drinks",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"drinks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/actors/1",
 					"event": [
 						{
@@ -156,36 +186,6 @@
 							"path": [
 								"drinks",
 								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/actors",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 401\", function () {",
-									"    pm.response.to.have.status(401);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/drinks",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"drinks"
 							]
 						}
 					},
@@ -641,6 +641,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQxODRiNDk3OTAwNjkyNjM4OTQiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ4Mzg4MDYsImV4cCI6MTYxNDkyNTIwNiwiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMtaWQiLCJnZXQ6bW92aWVzLWlkIl19.ttfH_RsuCgCI9sbDvXHwqCiXSoGPD0Jeo62fvEo3dwYoRFSA0o-UYguATTP9W2hz6rxQVoUh5Yz-BnRwJPr8ufOz5HF8QxUZdqzYhQi1y5iiMvYea5I9Whv3RvdzkLA5viJ5hBe_6F-tpJC3ljqsKESPiE4c9LdXDvffDd5824bWBR-SFYRdnk5oqRD-3FAJeceSBI5liU0hnUiuW9XcQ-pK13zhdYRGmZkko2Tden1JgitTFtR2bysUairI6ltAvMo0TSJ129WCNTKmAX-CDRNIJ7u06h9Dp_LJZf2yji-12wMAhh6PYKCdoECjloMKR2B5drpFhkgep71h8acAyQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -960,6 +990,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQ0Mzg3NTZkZjAwNjlhNDk5MTUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ4MzkxMDAsImV4cCI6MTYxNDkyNTUwMCwiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YWN0b3JzLWlkIiwiZ2V0Om1vdmllcy1pZCIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.sMnBVJoLwnodgw6uDRpghembLc8Luk3WXXTmYgZtELtVgEmrjyvrCAaR79BCnnFRVBxHbE3hzyVI_0u_ekQD5pXftgQibwcnWFQOOL3Z-rykN0mUhFGCtaCD2Tz2eVtg8BN6r23yPCNTqENz6pnep6MMYQ_7JC82dX0OHp078Ycl6OkeIseFcFQOQDsJYk3taE7s0GO9olcsLdUiu-aV9vxAIXIdCBeG_DqjQx_PWXEu0kfV24hbWgqp9oOZ286Of6vcm-D095t750u7ov0auDZHj8z71u7snOqzSz_clTjGUNw4aqG0siO-yufXPo2NOCQ7-Rpp1SNmNASrBzPHIA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -1013,13 +1073,22 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nicholas Cage\",\n    \"date_of_birth\": \"1950-03-9\",\n    \"gender\": \"M\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{host}}/drinks",
+							"raw": "{{host}}/actors",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"drinks"
+								"actors"
 							]
 						}
 					},
@@ -1153,6 +1222,36 @@
 					"response": []
 				},
 				{
+					"name": "/movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/drinks",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"drinks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/movies/1",
 					"event": [
 						{
@@ -1174,36 +1273,6 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/drinks",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"drinks"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/movies",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 401\", function () {",
-									"    pm.response.to.have.status(401);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{host}}/drinks",
@@ -1278,6 +1347,36 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQ2ZDBmMThkYjAwNjlmYTU0NzYiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ4MzkxNzcsImV4cCI6MTYxNDkyNTU3NywiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycy1pZCIsImdldDptb3ZpZXMtaWQiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.WPUDqhNcU0DnmK6jpuZRg1Qlkn4bycgN-FGUvo9jajfYC34CkRtBX8BrldQK4WPs-C_tkhaclQ7zxSX2G5XfKlVDnHmNt9VLLCNd4HrJL0Zg25UnHY4XzEH61Ojknhd9SNgX4gqDoQJmnL5jhbdBr1O828QogN6fmycez_lUmQty1lwDhE4mNIYyZg6eFot3fTXEVgszPzPPd49SHDJLa3yIO46Dtb6O1HTE-uoa0gLtL69Tx130Z9ZiasrRTmWPhfh9oMlq5Fa8JTwXpLIE7q9pX9Y2PH9q6UHCBw1yiZV1S0Q5nSAcJGT8g0ksMAIrSnOxvwW1n_KkUnIQo6uN7w",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
