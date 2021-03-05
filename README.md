@@ -148,6 +148,6 @@ Tests currently use a sample Casting Director token that has all roles access
     ```
    2. Test instructions
       Test your endpoints with [Postman](https://getpostman.com).
-      - get an authorization url **https://moviesapiauth0.herokuapp.com/**
+      - get an authorization url **https://heroku-casting-agency-nes.herokuapp.com/**
       - login with one of the users specified in **2. Get token**
       - use the token above to test the endpoints (take note of user permissions as listed above)
