@@ -80,19 +80,74 @@ Url for authorization:
 https://fsnd-nes.us.auth0.com/login?state=g6Fo2SBidmZUeER4MWdxWFFPLVBJRjVlNVhjclJBU2ljeFRzZ6N0aWTZIHQzTHVHZFY3N2Y3R2JBeE53bmNpei1FbGFYcmV3NjZmo2NpZNkgSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzI&client=JGmjaRutW3eW63rA0wbPCDUoon5sJX72&protocol=oauth2&audience=casting-agency-api&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2F
 ```
 
-Casting Assistant Token:
+First, [install Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask) if you haven't already.
+
+  ```
+  $ cd ~
+  $ sudo pip3 install Flask
+  ```
+
+To start and run the local development server,
+
+1. Initialize and activate a virtualenv:
+  ```
+  $ cd YOUR_PROJECT_DIRECTORY_PATH/
+  $ virtualenv --no-site-packages env
+  $ source env/bin/activate
+  ```
+
+2. Install the dependencies:
+  ```
+  $ pip install -r requirements.txt
+  ```
+
+3. Run the development server:
+  ```
+  $ export FLASK_APP=myapp
+  $ export FLASK_ENV=development # enables debug mode
+  $ python3 app.py
+  ```
+
+4. Run Migrations
 ```
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQxODRiNDk3OTAwNjkyNjM4OTQiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ2MTY0MDUsImV4cCI6MTYxNDcwMjgwNSwiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMtaWQiLCJnZXQ6bW92aWVzLWlkIl19.d4ZUGsll-owe3Iv9MZAce_gCT0eVZjYwEky19uOegSqT_jvO1AcVYo7JiatvBpmczBvUBfmD_4MsCeElSFqC3Xk114FJMmv02UBtNjaeA2SJTOIv593GmFMCaCA9LaZAEEHOAL2XJhIQors2bp0DLE953jnQedXck4SJWkn_3MeAcxoyQ1CR3-RZOpqQj62vfv-k4r39XD0FjI_Smq3I3eRJSe1f2UU4Kx9pJW4J_UoKGbJ-OuCkEyrzsaXN4LSQvVsJEApnfr5JqIQESCTgynJNsKy2Mkev8HK5OaumSJY5DSO-Jiq59Ogi-Qj3FrxE1DMVWBtZQIeCarB0LqyBjw
-```
+  $ cd YOUR_PROJECT_DIRECTORY_PATH/
+  $ python manage.py db init
+  $ python manage.py db migrate
+  $ python manage.py db upgrade
+  ```
+### Making API calls
+   To start making API calls with sample tokens
 
-casting director token:
-```
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQ0Mzg3NTZkZjAwNjlhNDk5MTUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ2MTc0MjMsImV4cCI6MTYxNDcwMzgyMywiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YWN0b3JzLWlkIiwiZ2V0Om1vdmllcy1pZCIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.Jv6-QFEhzBZCAPJpMMWhXtdu8daWocBFGRza9gDa6uiq8B8eft47lKZvZaM_MKHBMHH2aM1jOBPj6Yn5XT1xkC31gWbMhDiilgPa6j-aCfnrOJNGK43atePv8QgbgONv2Oz5ksBgaYuTqA348RZu36YesHS8Gs4mIq4wfHAuZlnLBr2a2mN2ecotT0L4okMrplMN4rlvbMD4buJj9E0KU1n_2hIe35kwjQx2AikocpKqZYyEuIm7BKpEFgRoz8VB2bpkZfHnI13T-afmJjFxG3hpOdTnxK8GWN4lk26s9I_KHIJBqJobb2S7WC4E1iQDCsmp1lFEPkiBftJM0k6gzA
-```
+1. Get authorization url
+  ```http://localhost:5000/authorization/url
+  ```
+  Paster the url in the browser and follow the instructions below
+2. Get token
+    Casting Assistant
+      * username castingassistant@gmail.com
+      * password MOVIEcasting123
+    Casting Director
+      * username castingdirector@gmail.com
+      * password MOVIEcasting123
+    Executive Producer
+       * username executiveproducer@gmail.com
+       * password MOVIEcasting123
+3. Get the token from the browser redirect after logging in with one of these users
+   This depends on the action you want to perform
+4. Use postman or any package to make a request with bearer authorization header
 
-## API Endpoints Documentation
-### GET '/movies'
+## Running Tests
+Tests currently use a sample Casting Director token that has all roles access
+  1. get the token from the authorization url and update the test_app.py before running the code
+  2. ensure to run the app to post movie and actor
+  2. python test_app.py
 
-
-
-## Tests
+## Testing the live app
+   1. production url
+    ```http://localhost:5000/authorization/url
+    ```
+   2. Test instructions
+      Test your endpoints with [Postman](https://getpostman.com).
+      - get an authorization url **https://moviesapiauth0.herokuapp.com/**
+      - login with one of the users specified in **2. Get token**
+      - use the token above to test the endpoints (take note of user permissions as listed above)

@@ -4,12 +4,33 @@ from models import Movies, Actor, setup_db
 import sys
 from auth.auth import AuthError, requires_auth
 
+AUTH0_DOMAIN = 'fsnd-nes.us.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'casting-agency-api'
+CLIENT_ID = 'JGmjaRutW3eW63rA0wbPCDUoon5sJX72'
+CALLBACK_URL = "http://localhost:5000/"
+
 
 def create_app(test_config=None):
     """create and configure the app"""
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
+
+    @app.route("/authorization/url", methods=["GET"])
+    def generate_auth_url():
+        """
+         generate auth url to get tokens for each user
+        """
+        url = f'https://{AUTH0_DOMAIN}/authorize' \
+            f'?audience={API_AUDIENCE}' \
+            f'&response_type=token&client_id=' \
+            f'{CLIENT_ID}&redirect_uri=' \
+            f'{CALLBACK_URL}'
+
+        return jsonify({
+            'url': url
+        })
 
     # CORS Headers
     @app.after_request
@@ -40,7 +61,7 @@ def create_app(test_config=None):
             movies = list(map(Movies.short, Movies.query.all()))
             return jsonify({
                 'success': True,
-                'movies': movies,
+                'movie': movies,
             }), 200
 
         except Exception:
@@ -68,7 +89,7 @@ def create_app(test_config=None):
             movies = list(map(Movies.long, Movies.query.all()))
             return jsonify({
                 'success': True,
-                'movies': movies,
+                'movie': movies,
 
             }), 200
         except Exception:
@@ -101,18 +122,19 @@ def create_app(test_config=None):
         PATCH /movies/<int:movie_id>
         to update the movie by id
         """
+
+        data = request.get_json()
+        movie = Movies.query.filter_by(id=movie_id).one_or_none()
+        if not movie:
+            abort(404)
+        if not data:
+            abort(422)
+        # check if none of the fields is there to raise an error
+        if not any(item in data.keys() for item in
+                   ['title',
+                    'release_year', 'duration']):
+            abort(400)
         try:
-            data = request.get_json()
-            movie = Movies.query.filter_by(id=movie_id).one_or_none()
-            if not movie:
-                abort(404)
-            if not data:
-                abort(422)
-            # check if none of the fields is there to raise an error
-            if not any(item in data.keys() for item in
-                       ['title',
-                        'release_year', 'duration']):
-                abort(400)
             if data.get('title', None):
                 movie.title = data['title']
             if data.get('duration', None):
@@ -165,7 +187,7 @@ def create_app(test_config=None):
             actors = list(map(Actor.long, Actor.query.all()))
             return jsonify({
                 'success': True,
-                'actors': actors,
+                'actor': actors,
             }), 200
 
         except Exception:
@@ -194,7 +216,7 @@ def create_app(test_config=None):
             actors = list(map(Actor.long, Actor.query.all()))
             return jsonify({
                 'success': True,
-                'actors': actors,
+                'actor': actors,
 
             }), 200
         except Exception:
@@ -226,19 +248,16 @@ def create_app(test_config=None):
         PATCH /actors/<int:actor_id>
         to update the movie by id
         """
+        data = request.get_json()
+        actor = Actor.query.filter_by(id=actor_id).one_or_none()
+        if not actor:
+            abort(404)
+        # check if none of the fields is there to raise an error
+        if not any(item in data.keys() for item in
+                   ['name',
+                    'gender', 'date_of_birth']):
+            abort(400)
         try:
-            data = request.get_json()
-            actor = Actor.query.filter_by(id=actor_id).one_or_none()
-
-            if not actor:
-                abort(404)
-            if not data:
-                abort(422)
-            # check if none of the fields is there to raise an error
-            if not any(item in data.keys() for item in
-                       ['name',
-                        'gender', 'date_of_birth']):
-                abort(400)
             if data.get('name', None):
                 actor.name = data['name']
             if data.get('gender', None):
@@ -253,7 +272,7 @@ def create_app(test_config=None):
             }), 200
         except Exception:
             print(sys.exc_info())
-            abort(422)
+            abort(500)
 
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
     @requires_auth('delete:actors')
