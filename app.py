@@ -1,14 +1,15 @@
+import os
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from models import Movies, Actor, setup_db
 import sys
 from auth.auth import AuthError, requires_auth
 
-AUTH0_DOMAIN = 'fsnd-nes.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'casting-agency-api'
-CLIENT_ID = 'JGmjaRutW3eW63rA0wbPCDUoon5sJX72'
-CALLBACK_URL = "http://localhost:5000/"
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'fsnd-nes.us.auth0.com')
+ALGORITHMS = os.environ.get("JWT_TOKEN_ENCRYPTION_ALGORITHMS", ['RS256'])
+API_AUDIENCE = os.environ('AUTH0_JWT_API_AUDIENCE', 'casting-agency-api')
+CLIENT_ID = os.environ('AUTH0_CLIENT_ID', 'JGmjaRutW3eW63rA0wbPCDUoon5sJX72')
+CALLBACK_URL = os.environ('CALLBACK_URL', "http://localhost:5000/")
 
 
 def create_app(test_config=None):
@@ -53,8 +54,8 @@ def create_app(test_config=None):
     def get_movies():
         """
         GET /movies
-        returns status code 200 and json {"success": True, "movies": movies} where
-        movies is the list of movies
+        returns status code 200 and json {"success": True, "movie": movies}
+        where movies is the list of movies
         or appropriate status code indicating reason for failure
         """
         try:
@@ -76,15 +77,16 @@ def create_app(test_config=None):
             it should create a new row in the movies table
             it should require the 'post:movies' permission
             it should contain the movie.long() data representation
-        returns status code 200 and json {"success": True, "movies": movie} where
+        returns status code 200 and json {"success": True, "movies":
+        movie} where
         drink an array containing only the newly created
          drink or appropriate status code indicating reason for failure
         """
         try:
             data = request.get_json()
             movie = Movies(title=data.get('title', None),
-                duration=data.get('duration', None),
-                release_year=data.get('release_year', None))
+                           duration=data.get('duration', None),
+                           release_year=data.get('release_year', None))
             movie.insert()
             movies = list(map(Movies.long, Movies.query.all()))
             return jsonify({
@@ -179,8 +181,8 @@ def create_app(test_config=None):
     def get_actors():
         """
         GET /actors
-        returns status code 200 and json {"success": True, "actors": actors} where
-        actors is the list of actors
+        returns status code 200 and json {"success": True, "actors": actors}
+        where actors is the list of actors
         or appropriate status code indicating reason for failure
         """
         try:
@@ -202,7 +204,8 @@ def create_app(test_config=None):
             it should create a new row in the actors table
             it should require the 'post:actors' permission
             it should contain the actor.long() data representation
-        returns status code 200 and json {"success": True, "actor": actor} where
+        returns status code 200 and json {"success": True, "actor":
+         actor} where
         actor an array containing only the newly created
          actor or appropriate status code indicating reason for failure
         """
@@ -210,8 +213,8 @@ def create_app(test_config=None):
             data = request.get_json()
 
             actor = Actor(name=data.get('name', None),
-                gender=data.get('gender', None),
-                date_of_birth=data.get('date_of_birth', None))
+                          gender=data.get('gender', None),
+                          date_of_birth=data.get('date_of_birth', None))
             actor.insert()
             actors = list(map(Actor.long, Actor.query.all()))
             return jsonify({
@@ -303,18 +306,18 @@ def create_app(test_config=None):
     @app.errorhandler(422)
     def unprocessable(error):
         return jsonify({
-                        "success": False,
-                        "error": 422,
-                        "message": "unprocessable"
-                        }), 422
+            "success": False,
+            "error": 422,
+            "message": "unprocessable"
+        }), 422
 
     @app.errorhandler(404)
     def resource_not_found(error):
         return jsonify({
-               "success": False,
-               "error": 404,
-               "message": "resource not found"
-               }), 404
+            "success": False,
+            "error": 404,
+            "message": "resource not found"
+        }), 404
 
     @app.errorhandler(400)
     def bad_request(error):

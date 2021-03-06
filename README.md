@@ -1,5 +1,8 @@
 # Casting agency
-Full stack Nanodegree Capstone project.
+
+## Motivation
+This project was developed to showcase the skills acquired for fullstack Nanodegree and it is Capstone project.
+
 
 ## Introduction
 The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
@@ -151,3 +154,231 @@ Tests currently use a sample Casting Director token that has all roles access
       - get an authorization url **https://heroku-casting-agency-nes.herokuapp.com/**
       - login with one of the users specified in **2. Get token**
       - use the token above to test the endpoints (take note of user permissions as listed above)
+
+## Endpoints
+## Movies
+
+### `GET /movies`
+
+##### `Public`
+
+- Fetches all the movies from the database
+- Request arguments: None
+- Returns: A list of movies contain key:value pairs of id, title and release_date
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "movie": [ {
+    "id" : 1,
+    "title": "Star Wars",
+    "duration": 120,
+    "release_year": "1971"
+  }, {
+    "id" : 2,
+    "title": "Star Wars",
+    "duration": 120,
+    "release_year": "1971"
+  }]
+}
+```
+
+### `POST /movies`
+
+##### `Executive Producer`
+
+- Creates a movie from the request's body
+- Request arguments: None
+- Returns: the created movie contains key:value pairs of id, title and release_date
+
+#### `Body`
+
+```
+{
+  "title": "Star Wars",
+  "duration": 120,
+  "release_year": "1971"
+}
+```
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "movie": [{
+    "title": "Star Wars",
+    "duration": 120,
+    "release_year": "1971"
+  }]
+}
+```
+
+### `PATCH /movies/<int:id>`
+
+##### `Casting Director or Executive Producer`
+
+- Updates a movie using the information provided by request's body
+- Request arguments: Movie id
+- Returns: the updated movie contains key:value pairs of id, title and release_date
+
+#### `Body`
+
+```
+{
+
+  "duration": 150
+}
+```
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "movie": [{
+    "title": "Star Wars",
+    "duration": 150,
+    "release_year": "1971"
+  }]
+}
+```
+
+### `DELETE /movies/<int:id>`
+
+##### `Executive Producer`
+
+- Deletes a movie based the request argument
+- Request arguments: Movie id
+- Returns: the deleted movie id
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "deleted": 1
+}
+```
+
+## Actors
+
+### `GET /actors`
+
+##### `Public`
+
+- Fetches all the actors from the database
+- Request arguments: None
+- Returns: A list of actors contain key:value pairs of id, name, age and gender
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "actor": [
+    {
+      "id": 1,
+      "name": "James",
+      "date_of_birth": "1950-03-1",
+      "gender": "M"
+    },
+    {
+       "id" : 2
+       "name": "Nicholas",
+       "date_of_birth": "1950-03-1",
+       "gender": "M"
+    }
+  ]
+}
+```
+
+### `POST /actors`
+
+##### `Casting Director or Executive Producer`
+
+- Creates an actor from the request's body
+- Request arguments: None
+- Returns: the created actor contains key:value pairs of id, name, age and gender
+
+#### `Body`
+
+```
+{
+   "name": "Nicholas",
+   "date_of_birth": "1950-03-1",
+   "gender": "M"
+}
+```
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "actor": [{
+     "id": 1,
+     "name": "Nicholas",
+     "date_of_birth": "1950-03-9",
+     "gender": "M"
+  }]
+}
+```
+
+### `PATCH /actors/<int:id>`
+
+##### `Casting Director or Executive Producer`
+
+- Updates a actor using the information provided by request's body
+- Request arguments: Actor id
+- Returns: the updated actor contains key:value pairs of id, name, age and gender
+
+#### `Body`
+
+```
+{
+   "date_of_birth": "1950-03-1"
+}
+```
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "actor": [{
+     "id": 1,
+     "name": "Nicholas",
+     "date_of_birth": "1950-03-9",
+     "gender": "M"
+  }]
+}
+```
+
+### `DELETE /actors/<int:id>`
+
+##### `Casting Director or Executive Producer`
+
+- Deletes an actor based the request argument
+- Request arguments: Actor id
+- Returns: the deleted actor id
+
+#### `Response`
+
+```
+{
+  "success": true,
+  "deleted": 1
+}
+```
+
+## Status Codes
+
+- `200` : Request has been fulfilled
+- `201` : Entity has been created
+- `401` : Unauthorized
+- `404` : Resource not found
+- `422` : Wrong info provided
+- `500` : Internal Server Error

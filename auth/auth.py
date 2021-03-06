@@ -1,13 +1,14 @@
+import os
 import json
-from flask import request, _request_ctx_stack
+from flask import request
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'fsnd-nes.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'casting-agency-api'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'fsnd-nes.us.auth0.com')
+ALGORITHMS = os.environ.get("JWT_TOKEN_ENCRYPTION_ALGORITHMS", ['RS256'])
+API_AUDIENCE = os.environ('AUTH0_JWT_API_AUDIENCE', 'casting-agency-api')
 
 
 # AuthError Exception
@@ -127,9 +128,9 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
 
 
 '''
@@ -139,8 +140,10 @@ def verify_decode_jwt(token):
 
     it should use the get_token_auth_header method to get the token
     it should use the verify_decode_jwt method to decode the jwt
-    it should use the check_permissions method validate claims and check the requested permission
-    return the decorator which passes the decoded payload to the decorated method
+    it should use the check_permissions method validate claims
+    and check the requested permission
+    return the decorator which passes the decoded
+    payload to the decorated method
 '''
 
 

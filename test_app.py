@@ -11,7 +11,7 @@ DB_PATH = os.getenv('DATABASE_URL',
                     "postgresql://postgres@localhost:5432/casting_agency")
 
 
-EXECUTIVE_PRODUCER_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJIV3c4ODhQUGdaWnk3a2F2VjI0TCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtbmVzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDNkMDQ2ZDBmMThkYjAwNjlmYTU0NzYiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeS1hcGkiLCJpYXQiOjE2MTQ5NDE2MjEsImV4cCI6MTYxNTAyODAyMSwiYXpwIjoiSkdtamFSdXRXM2VXNjNyQTB3YlBDRFVvb241c0pYNzIiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycy1pZCIsImdldDptb3ZpZXMtaWQiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.DJRcD0TgRFwmPy-B1Iz9Eq3_x2AJWFpv3zbA-DQcAwYGMQ9PFaEmTOgOYnRy8edAm6krIiUZEPsG2tvBoIblUnANHOLPVdQ3djhrG3T07UKYeVrG-Eg2Fh990Xgq1K3iz9zmEWYAHCxjKLq-gYQnoEEYwNjBE5SBJ3gulKVg4YRmw1-KUIfhCRQth2_I59pMX-DUVZyXjmOEOwko83xRaxVCEpAumJeE2otgwHSZAi2w3_IL-KMElt_t3S155EzcqLGiq-v7gvtOGfRFapLxvwt6r2ZqtFhQNQLPhGPe0_oSg5aQvgK6g75iXd9bPO68Or2stdsUsPnTYh8jHVp1zw"
+EXECUTIVE_PRODUCER_TOKEN = os.getgetenv("TOKEN")
 
 headers = {'Authorization': f'Bearer {EXECUTIVE_PRODUCER_TOKEN}'}
 
@@ -25,13 +25,6 @@ class CastingTestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.database_path = DB_PATH
         setup_db(self.app, self.database_path)
-        #
-        # # binds the app to the current context
-        # with self.app.app_context():
-        #     self.db = SQLAlchemy()
-        #     self.db.init_app(self.app)
-        #     # create all tables
-        #     self.db.create_all()
         self.actor = {
             "name": "Nicholas Cage  gdc",
             "date_of_birth": "1950-03-9",
@@ -123,8 +116,8 @@ class CastingTestCase(unittest.TestCase):
     def test_404_patch_movie_header(self):
         """Test patch movies for a non found movie"""
         data = {"duration": 150}
-        res = self.client().patch(f'/movies/290',
-                        json=data, headers=headers)
+        res = self.client().patch('/movies/290',
+                                  json=data, headers=headers)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -135,7 +128,7 @@ class CastingTestCase(unittest.TestCase):
         movie_id = Movies.query.all()[0].id
         data = {"duration": 150}
         res = self.client().patch(f'/movies/{movie_id}',
-                        json=data, headers=headers)
+                                  json=data, headers=headers)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -231,7 +224,7 @@ class CastingTestCase(unittest.TestCase):
         actor_id = Actor.query.all()[0].id
         data = {"date_of_birth": "1950-03-1"}
         res = self.client().patch(f'/actors/{actor_id}',
-                                   json=data)
+                                  json=data)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
@@ -251,7 +244,7 @@ class CastingTestCase(unittest.TestCase):
         actor_id = Actor.query.all()[0].id
         data = {"date_of_birth": "1950-03-1"}
         res = self.client().patch(f'/actors/{actor_id}',
-                                   json=data, headers=headers)
+                                  json=data, headers=headers)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
